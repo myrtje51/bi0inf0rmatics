@@ -2,7 +2,7 @@
 
 How many functions does the program contain? 
 Functions for mapping DrugBank and STITCH: 
-- STITCHfilter() --> Filters STITCH dataset bij a confidence score of 0.7 or higher. 
+- STITCHfilter() --> Filters STITCH dataset bij a confidence score of 0.7 or higher. This could be done using import sys and then taking the last column. If the value in that column is higher than or equal to 700 the line needs to be written to another file.  
 - STITCHgetInchi() --> Get the InchiKey's using PubChem (input: CID, output: InchiKey) (Hopefully we'll be able to use the package pubchempy for that).
 - STITCHgetDBID() --> Get the DrugBank ID's using Unichem (input: InchiKey, output: DrugBank ID) (there isn't a package on this). 
 - MapDBandSTITCH() --> Map the DrugBank dataset to the STITCH dataset using the DrugBank ID (R could be used for this). 
