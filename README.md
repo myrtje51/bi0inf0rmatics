@@ -12,17 +12,17 @@ Funtions for the Ageing Clusters Resource:
 - ACR_DTenrich() --> The filtered dataset is enriched using the Drug & Target dataset. This can be done using R with the Fisher's exact test. 
 
 Functions for the different biological levels:
-- Reactome_ACRenrich() --> The filtered geneset and the reactome terms are enriched against eachother. For this a R-package is used called: EnrichPathway.
-- Reactome_DTenrich() --> 
+- Reactome_ACRenrich() --> The filtered geneset and the reactome terms are enriched against eachother. For this a R-package is used called: EnrichPathway. The output will be a list of age-related reactome terms. 
+- Reactome_DTenrich() --> The list of age-related reactome terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
 
-- KEGG_ACRenrich() --> The filtered geneset and the KEGG terms are enriched against eachother. For this a R-package is used as well called: EnrichKEGG. 
-- KEGG_DTenrich() --> 
+- KEGG_ACRenrich() --> The filtered geneset and the KEGG terms are enriched against eachother. For this a R-package is used as well called: EnrichKEGG. The output will be a list of age-related KEGG terms. 
+- KEGG_DTenrich() --> The list of age-related KEGG terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
 
-- GO_ACRenrich() --> The filtered geneset and the GO terms are enriched against eachother. For this a R-package is used called: EnrichGO. 
-- GO_DTenrich() --> 
+- GO_ACRenrich() --> The filtered geneset and the GO terms are enriched against eachother. For this a R-package is used called: EnrichGO. The output will be a list of age-related GO terms.  
+- GO_DTenrich() --> The list of age-related GO terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
 
-- PPI_ACRenrich() --> 
-- PPI_DTenrich() --> 
+- PPI_ACRenrich() --> The filtered geneset and the PPI's are enriched against eachother. There is no R-package for this so only a fisher's exact test needs to be done. The output will be a list of age-related PPI's. 
+- PPI_DTenrich() --> The list of age-related PPI's gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
 
 - FirstRanking() --> Out of each enrichment comes a list of drugs with p-values. These p-values will determine the ranking of the drugs. The smaller the p-value the better (so a drug with a small p-value will be high up in the ranking).  
 
