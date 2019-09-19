@@ -1,23 +1,30 @@
 import sys
-import pubchempy as pcp
+import requests
 
 def STITCH_inchikey():
-    with open('protein_chemical_links_v5.0_2.0.tsv') as f2:
+    with open('protein_chemical_links_v5.0_2.1.tsv') as f2:
         next(f2)
-        with_inchi = open("just_inchi.tsv","w+")
-        with_inchi.write("InchiKey\n")
+        just_CIDs = open("just_CID.txt","w+")
+        just_CIDs.write("cid=")
+        count_line = 0
         for line2 in f2:
+            count_line += 1
             fields = line2.strip().split()
-            pubmedID_unfiltered = fields[0]
-            pubmedID = pubmedID_unfiltered[4::]
-            c = pcp.Compound.from_cid(pubmedID)
-            inchikey = c.inchikey
-            #print(inchikey)   
-            with_inchi.write(inchikey + "\n")
+            CID_unfiltered = fields[0]
+            CID = CID_unfiltered[4::]
+            if count_line < 466669 :
+                just_CIDs.write(CID + ",")
+            else:
+                just_CIDs.write(CID)
+        just_CIDs.close()
+    data = open('just_CID.txt')
+    response = requests.post('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/property/InChIKey/CSV', data=data)
+    CID_Inchi = open("resp_text.txt", "w+")
+    CID_Inchi.write(response.text)
+    CID_Inchi.close()
 
-        with_inchi.close() 
-        
 def main():
     STITCH_inchikey()
 
-main() 
+main()
+
