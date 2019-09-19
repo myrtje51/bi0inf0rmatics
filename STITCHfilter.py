@@ -1,7 +1,8 @@
 import sys
 
+
 def STITCH_filter():
-    with open('protein_chemical.links.v5.0.tsv') as f:
+    with open('9606.protein_chemical.links.v5.0.tsv') as f:
         next(f)
         file = open("protein_chemical_links_v5.0_2.1.tsv","w+")
         file.write("chemical\tprotein\tcombined_score\n")
