@@ -1,6 +1,5 @@
 import sys
 
-
 def STITCH_filter():
     with open('9606.protein_chemical.links.v5.0.tsv') as f:
         next(f)
