@@ -30,15 +30,18 @@ def STITCH_inchikey():
         size=sum(1 for _ in f3)
         size = size + 1 
     with open('protein_chemical_links_v5.0_2.1.tsv') as f2: 
+
         just_CIDs = open("just_CID.txt","w+")
         just_CIDs.write("cid=")
         count_line = 0
         for line2 in f2:
+
             count_line += 1 
             fields = line2.strip().split()
             CID_unfiltered = fields[0]
             CID = CID_unfiltered[4::]
             if count_line < size:
+
                 just_CIDs.write(CID + ",")
             else:
                 just_CIDs.write(CID)
@@ -57,3 +60,4 @@ def main():
     STITCH_inchikey()
 
 main()
+
