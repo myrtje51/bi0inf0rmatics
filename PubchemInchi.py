@@ -25,27 +25,11 @@ def STITCH_inchikey():
     CID_inchi = a file with the output from response (which has the CID and the
     InChiKey in one table). 
     """
-    with open('protein_chemical_links_v5.0_2.1.tsv') as f3:
-        next(f3)
-        size=sum(1 for _ in f3)
-        size = size + 1 
-    with open('protein_chemical_links_v5.0_2.1.tsv') as f2: 
-
-        just_CIDs = open("just_CID.txt","w+")
-        just_CIDs.write("cid=")
-        count_line = 0
-        for line2 in f2:
-
-            count_line += 1 
-            fields = line2.strip().split()
-            CID_unfiltered = fields[0]
-            CID = CID_unfiltered[4::]
-            if count_line < size:
-
-                just_CIDs.write(CID + ",")
-            else:
-                just_CIDs.write(CID)
-        just_CIDs.close()
+    cids = [ line.strip().split()[0][4::] for line in open('protein_chemical_links_v5.0_2.1.tsv') ] 
+    joined = ','.join(cids)
+    just_CIDs = open("just_CID.txt","w+")
+    just_CIDs.write("cid=")
+    just_CIDs.write(joined) 
     data = open('just_CID.txt')
     response = requests.post('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/property/InChIKey/CSV', data=data)
     CID_Inchi = open("resp_text.txt", "w+")
@@ -60,4 +44,3 @@ def main():
     STITCH_inchikey()
 
 main()
-
