@@ -25,8 +25,11 @@ Functions for the different biological levels:
 - GO_ACRenrich() --> The filtered geneset and the GO terms are enriched against eachother. For this a R-package is used called: EnrichGO. The output will be a list of age-related GO terms.  
 - GO_DTenrich() --> The list of age-related GO terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
 
-- PPI_ACRenrich() --> The filtered geneset and the PPI's are enriched against eachother. There is no R-package for this so only a fisher's exact test needs to be done. The output will be a list of age-related PPI's. 
+- read_ppis() --> 
+- entrez_to_protein() --> 
+- make_dictio_ppi() --> 
 - PPI_DTenrich() --> The list of age-related PPI's gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
+- main_ppi() --> 
 
 - FirstRanking() --> Out of each enrichment comes a list of drugs with p-values. These p-values will determine the ranking of the drugs. The smaller the p-value the better (so a drug with a small p-value will be high up in the ranking). Each list will be written to a file. So you will end up with 7 different files. This way, you will be able to take the ranking of each drug and take an average which will be important in the last function (CalLastRanking()).  
 
