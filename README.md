@@ -10,7 +10,10 @@ Functions for mapping DrugBank and STITCH:
 
 Funtions for the Ageing Clusters Resource:
 - ACRfilter() --> Filters the ACR by only keeping the genes that are present in two or more of the categories (you can use some if-statements for that probably since it's not a big dataset). There is a column that counts in how many categories the gene is present so you can just tell the program that if the value in that column is higher than 1 write that to another file.  
-- ACR_DTenrich() --> The filtered dataset is enriched using the Drug & Target dataset. This can be done using R with the Fisher's exact test. 
+- class ProteinSet --> takes a dictionary with terms and sets of proteins and performs an enrichment on them. 
+- make_dictio_DT --> makes a dictionary with one drug and a list of targets linked to that drug. 
+- entrez_to_protein --> converts the entrez gene id's to protein ensembl ID's 
+- main_ACR_DT --> reads in the universe and calls all the above mentioned functions/classes. 
 
 Functions for PPI filter: 
 - PPIfilter() --> Filters PPI dataset by a confidence score of 0.9 or higher. This could be done using import sys en then taking the last column. If the value in that column is higher than or equal to 900 the line needs to be written to another file. 
