@@ -1,5 +1,18 @@
 # bi0inf0rmatics
 
+For new users, some packages that are needed to run this program: 
+Python packages: 
+- rpy2
+- pandas
+- numpy
+- scipy
+- 
+
+R packages (within anaconda/miniconda): 
+- clusterProfiler
+- ReactomePA 
+- org.Hs.eg.db
+
 How many functions does the program contain? 
 
 Functions for mapping DrugBank and STITCH: 
