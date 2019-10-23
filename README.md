@@ -1,12 +1,13 @@
 # bi0inf0rmatics
 
 For new users, some packages that are needed to run this program: 
+
 Python packages: 
 - rpy2
 - pandas
 - numpy
 - scipy
-- 
+- requests
 
 R packages (within anaconda/miniconda): 
 - clusterProfiler
