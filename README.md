@@ -12,6 +12,7 @@ Python packages:
 R packages (within anaconda/miniconda): 
 - clusterProfiler
 - ReactomePA 
+- STRINGdb
 - org.Hs.eg.db
 
 How many functions does the program contain? 
