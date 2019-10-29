@@ -65,3 +65,6 @@ Functions for getting the last ranking:
 
 Functions for getting the last ranking:  
 - LastRanking() --> The list will be ranked by the average ranking.
+
+Extra scripts:
+Statistics Drugs & Targets.ipynb --> This code is reserved for any kind of statistic that needs to be done to the output of any of the functions. 
