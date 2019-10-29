@@ -55,7 +55,7 @@ and maps it against STRINGv10.
 Classes for the full enrichment:
 - main_enrichments(object) --> does the last enrichments using the genesets that come out of the first enrichments with the 
 biological levels and the ppi's.
-
+  - hoi
 
 
 Functions for getting the last ranking: 
