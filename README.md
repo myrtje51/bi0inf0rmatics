@@ -17,22 +17,22 @@ R packages (within anaconda/miniconda):
 
 ### How many functions does the program contain? 
 
-Functions for mapping DrugBank and STITCH: 
+*Functions for mapping DrugBank and STITCH:*
 - STITCHfilter() --> Filters STITCH dataset by a confidence score of 0.7 or higher. This could be done using import sys and then taking the last column. If the value in that column is higher than or equal to 700 the line needs to be written to another file.  
 - get_STITCH_inchikey --> Get the InchiKey's using PubChem (input: CID, output: InchiKey). We used the package requests to get and API through Python.  
 - STITCHgetDBID() --> This function maps the STITCH database against the DrugBank database using the inchikey.
 
-Funtions for the Ageing Clusters Resource:
+*Funtions for the Ageing Clusters Resource:*
 - ACRfilter() --> Filters the ACR by only keeping the genes that are present in two or more of the categories (you can use some if-statements for that probably since it's not a big dataset). There is a column that counts in how many categories the gene is present so you can just tell the program that if the value in that column is higher than 1 write that to another file. 
 
-Functions for PPI filter: 
+*Functions for PPI filter:*
 - PPIfilter() --> Filters PPI dataset by a confidence score of 0.9 or higher. This could be done using import sys en then taking the last column. If the value in that column is higher than or equal to 900 the line needs to be written to another file. 
 
-Functions for the conversion of several kinds of id's (in case you need them): 
+*Functions for the conversion of several kinds of id's (in case you need them):*
 - protein_to_entrez() --> converts the protein ensembl id's to entrez gene id's. 
 - entrez_to_protein() --> converts the entrez gene id's to protein ensembl id's.
 
-Functions for the full enrichment: 
+*Functions for the full enrichment:* 
 - make_dictio_DT() --> makes a dictionary out of the dataset where DrugBank and STITCH are mapped. 
 - cluster_profiler_KEGG() --> enriches the given gene list using the KEGG dataset. This is done with a R-package called: 
 clusterProfiler. To be able to use this package in Python, rpy2 is used in this function. 
@@ -47,7 +47,7 @@ To be able to use this package in Python, rpy2 is used in this function.
 and maps it against STRINGv10. 
 - ppi_dictio() --> makes a dictionary out of the results that get out of the function: ppi_interactions(). 
 
-Classes for the full enrichment:
+*Classes for the full enrichment:*
 - main_enrichments(object) --> does the last enrichments using the genesets that come out of the first enrichments with the 
 biological levels and the ppi's.
   - def __init__(self, gene_list) --> calls all the above functions and puts the results in lists. 
@@ -60,10 +60,10 @@ genesets.
   - set_enrichment(self, your_set, other_set, universe, abcd_values=False) --> enriches the genesets. 
 
 
-Functions for getting the last ranking: 
+*Functions for getting the last ranking:*
 - FirstRanking() --> Out of each enrichment comes a list of drugs with p-values. These p-values will determine the ranking of the drugs. The smaller the p-value the better (so a drug with a small p-value will be high up in the ranking). Each list will be written to a file. So you will end up with 7 different files. This way, you will be able to take the ranking of each drug and take an average which will be important in the last function (CalLastRanking()).  
 
-Functions for getting the last ranking:  
+*Functions for getting the last ranking:*
 - LastRanking() --> The list will be ranked by the average ranking.
 
 ### Extra scripts:
