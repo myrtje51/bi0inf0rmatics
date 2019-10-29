@@ -57,6 +57,12 @@ Classes for the full enrichment:
 biological levels and the ppi's.
   - def __init__(self, gene_list) --> calls all the above functions and puts the results in lists. 
   - def enrich_BL(self) --> does the enrichments by looping through the list of results that is made in the function above. 
+- ProteinSet(object) --> contains the code for the actual enrichment. You can give this class a dictionary with terms and 
+genesets. 
+  - def __init__(self, proteindict, database) --> defining the variables that are going to be used in the whole dataset. 
+  - def enrich(self, otherset, background) --> contains the code that loops through the dictionaries to compare the sets of 
+  genes. This function calls the function: set_enrichment(). 
+  - set_enrichment(self, your_set, other_set, universe, abcd_values=False) --> enriches the genesets. 
 
 
 Functions for getting the last ranking: 
