@@ -55,7 +55,8 @@ and maps it against STRINGv10.
 Classes for the full enrichment:
 - main_enrichments(object) --> does the last enrichments using the genesets that come out of the first enrichments with the 
 biological levels and the ppi's.
-  - hoi
+  - def __init__(self, gene_list) --> calls all the above functions and puts the results in lists. 
+  - def enrich_BL(self) --> does the enrichments by looping through the list of results that is made in the function above. 
 
 
 Functions for getting the last ranking: 
