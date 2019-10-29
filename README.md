@@ -19,7 +19,8 @@ How many functions does the program contain?
 
 Functions for mapping DrugBank and STITCH: 
 - STITCHfilter() --> Filters STITCH dataset by a confidence score of 0.7 or higher. This could be done using import sys and then taking the last column. If the value in that column is higher than or equal to 700 the line needs to be written to another file.  
-- get_STITCH_inchikey --> Get the InchiKey's using PubChem (input: CID, output: InchiKey) (Hopefully we'll be able to use the package pubchempy for that).  
+- get_STITCH_inchikey --> Get the InchiKey's using PubChem (input: CID, output: InchiKey). We used the package requests to get and API through Python.  
+- STITCHgetDBID() --> This function maps the STITCH database against the DrugBank database using the inchikey.
 
 Funtions for the Ageing Clusters Resource:
 - ACRfilter() --> Filters the ACR by only keeping the genes that are present in two or more of the categories (you can use some if-statements for that probably since it's not a big dataset). There is a column that counts in how many categories the gene is present so you can just tell the program that if the value in that column is higher than 1 write that to another file. 
