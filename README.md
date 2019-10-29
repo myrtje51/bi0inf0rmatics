@@ -19,16 +19,10 @@ How many functions does the program contain?
 
 Functions for mapping DrugBank and STITCH: 
 - STITCHfilter() --> Filters STITCH dataset by a confidence score of 0.7 or higher. This could be done using import sys and then taking the last column. If the value in that column is higher than or equal to 700 the line needs to be written to another file.  
-- get_STITCH_inchikey --> Get the InchiKey's using PubChem (input: CID, output: InchiKey) (Hopefully we'll be able to use the package pubchempy for that).
-- STITCHgetDBID() --> Get the DrugBank ID's using Unichem (input: InchiKey, output: DrugBank ID) (there isn't a package on this). Maybe you don't have to use Unichem because DrugBank just made a new dataset that has the DrugBank ID and the InchiKey so maybe we could map those two datasets together? So if the InchiKey is a certain "value" then write DrugBank ID to another file (or add to certain table).  
-- MapDBandSTITCH() --> Map the DrugBank dataset to the STITCH dataset using the DrugBank ID (R could be used for this). So you can use %in% for that probably.  
+- get_STITCH_inchikey --> Get the InchiKey's using PubChem (input: CID, output: InchiKey) (Hopefully we'll be able to use the package pubchempy for that).  
 
 Funtions for the Ageing Clusters Resource:
-- ACRfilter() --> Filters the ACR by only keeping the genes that are present in two or more of the categories (you can use some if-statements for that probably since it's not a big dataset). There is a column that counts in how many categories the gene is present so you can just tell the program that if the value in that column is higher than 1 write that to another file.  
-- class ProteinSet --> takes a dictionary with terms and sets of proteins and performs an enrichment on them. 
-- make_dictio_DT --> makes a dictionary with one drug and a list of targets linked to that drug. 
-- entrez_to_protein --> converts the entrez gene id's to protein ensembl ID's 
-- main_ACR_DT --> reads in the universe and calls all the above mentioned functions/classes. 
+- ACRfilter() --> Filters the ACR by only keeping the genes that are present in two or more of the categories (you can use some if-statements for that probably since it's not a big dataset). There is a column that counts in how many categories the gene is present so you can just tell the program that if the value in that column is higher than 1 write that to another file. 
 
 Functions for PPI filter: 
 - PPIfilter() --> Filters PPI dataset by a confidence score of 0.9 or higher. This could be done using import sys en then taking the last column. If the value in that column is higher than or equal to 900 the line needs to be written to another file. 
@@ -69,4 +63,4 @@ Functions for getting the last ranking:
 - FirstRanking() --> Out of each enrichment comes a list of drugs with p-values. These p-values will determine the ranking of the drugs. The smaller the p-value the better (so a drug with a small p-value will be high up in the ranking). Each list will be written to a file. So you will end up with 7 different files. This way, you will be able to take the ranking of each drug and take an average which will be important in the last function (CalLastRanking()).  
 
 Functions for getting the last ranking:  
-- LastRanking() --> The list will be ranked by the average ranking. This could be done by the function series.rank() in pandas. 
+- LastRanking() --> The list will be ranked by the average ranking.
