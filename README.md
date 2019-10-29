@@ -19,7 +19,7 @@ How many functions does the program contain?
 
 Functions for mapping DrugBank and STITCH: 
 - STITCHfilter() --> Filters STITCH dataset by a confidence score of 0.7 or higher. This could be done using import sys and then taking the last column. If the value in that column is higher than or equal to 700 the line needs to be written to another file.  
-- STITCHgetInchi() --> Get the InchiKey's using PubChem (input: CID, output: InchiKey) (Hopefully we'll be able to use the package pubchempy for that).
+- get_STITCH_inchikey --> Get the InchiKey's using PubChem (input: CID, output: InchiKey) (Hopefully we'll be able to use the package pubchempy for that).
 - STITCHgetDBID() --> Get the DrugBank ID's using Unichem (input: InchiKey, output: DrugBank ID) (there isn't a package on this). Maybe you don't have to use Unichem because DrugBank just made a new dataset that has the DrugBank ID and the InchiKey so maybe we could map those two datasets together? So if the InchiKey is a certain "value" then write DrugBank ID to another file (or add to certain table).  
 - MapDBandSTITCH() --> Map the DrugBank dataset to the STITCH dataset using the DrugBank ID (R could be used for this). So you can use %in% for that probably.  
 
@@ -33,23 +33,33 @@ Funtions for the Ageing Clusters Resource:
 Functions for PPI filter: 
 - PPIfilter() --> Filters PPI dataset by a confidence score of 0.9 or higher. This could be done using import sys en then taking the last column. If the value in that column is higher than or equal to 900 the line needs to be written to another file. 
 
-Functions for the different biological levels:
-- Reactome_ACRenrich() --> The filtered geneset and the reactome terms are enriched against eachother. For this a R-package is used called: EnrichPathway. The output will be a list of age-related reactome terms. 
-- Reactome_DTenrich() --> The list of age-related reactome terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
+Functions for the conversion of several kinds of id's (in case you need them): 
+- protein_to_entrez() --> converts the protein ensembl id's to entrez gene id's. 
+- entrez_to_protein() --> converts the entrez gene id's to protein ensembl id's.
 
-- KEGG_ACRenrich() --> The filtered geneset and the KEGG terms are enriched against eachother. For this a R-package is used as well called: EnrichKEGG. The output will be a list of age-related KEGG terms. 
-- KEGG_DTenrich() --> The list of age-related KEGG terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
+Functions for the full enrichment: 
+- make_dictio_DT() --> makes a dictionary out of the dataset where DrugBank and STITCH are mapped. 
+- cluster_profiler_KEGG() --> enriches the given gene list using the KEGG dataset. This is done with a R-package called: 
+clusterProfiler. To be able to use this package in Python, rpy2 is used in this function. 
+- cluster_profiler_GO_MF() --> enriches the given gene list using the GO molecular functions dataset. This is done with a R-
+package called: clusterProfiler. To be able to use this package in Python, rpy2 is used in this function. 
+- cluster_profiler_GO_CC() --> enriches the given gene list using the GO cellular component dataset. This is done with a R-
+package called: clusterProfiler. To be able to use this package in Python, rpy2 is used in this function. 
+- cluster_profiler_GO_BP() --> enriches the given gene list using the GO biological process dataset. This is done with a R-package called: clusterProfiler. To be able to use this package in Python, rpy2 is used in this function. 
+- Reactome() --> enriches the given gene list using the Reactome dataset. This is done with a R-package called: ReactomePA.
+To be able to use this package in Python, rpy2 is used in this function. 
+- ppi_interactions() --> gets the protein-protein interactions from the R-package: STRINGdb. This package takes a gene list
+and maps it against STRINGv10. 
+- ppi_dictio() --> makes a dictionary out of the results that get out of the function: ppi_interactions(). 
 
-- GO_ACRenrich() --> The filtered geneset and the GO terms are enriched against eachother. For this a R-package is used called: EnrichGO. The output will be a list of age-related GO terms.  
-- GO_DTenrich() --> The list of age-related GO terms gets enriched against the Drug & Target dataset. There is no R-package for that so that just needs to be done with the fisher's exact test. The output will be a list of drugs. 
+Classes for the full enrichment:
+- main_enrichments(object) --> does the last enrichments using the genesets that come out of the first enrichments with the 
+biological levels and the ppi's.
 
-- read_ppis() --> Reads all the filtered PPI's 
-- entrez_to_protein() --> Translates the entrez gene ID's to protein ID's. 
-- make_dictio_ppi() --> Makes a dictionary with a protein and all the proteins that interact with this protein. 
-- main_ppi() --> calls all the functions and the enrichment class to do an enrichent against the drug database. 
 
-- FirstRanking() --> Out of each enrichment comes a list of drugs with p-values. These p-values will determine the ranking of the drugs. The smaller the p-value the better (so a drug with a small p-value will be high up in the ranking). Each list will be written to a file. So you will end up with 7 different files. This way, you will be able to take the ranking of each drug and take an average which will be important in the last function (CalLastRanking()).  
 
 Functions for getting the last ranking: 
-- CalLastRanking() --> From each drug a average ranking needs to be calculated. This ranking is the average of the ranking in each list (of the seven lists). You will first make a variable called ranking that starts at 0 and counts all the different rankings from one certain drug. Then you will tell the program to search for a certain drug by name in each file. After that you will tell the program to take the ranking and add the ranking to the rest of the rankings. Then you calculate the average and put that in a variable called average_ranking. This variable including the drug can then be written to a different file. 
+- FirstRanking() --> Out of each enrichment comes a list of drugs with p-values. These p-values will determine the ranking of the drugs. The smaller the p-value the better (so a drug with a small p-value will be high up in the ranking). Each list will be written to a file. So you will end up with 7 different files. This way, you will be able to take the ranking of each drug and take an average which will be important in the last function (CalLastRanking()).  
+
+Functions for getting the last ranking:  
 - LastRanking() --> The list will be ranked by the average ranking. This could be done by the function series.rank() in pandas. 
