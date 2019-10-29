@@ -1,6 +1,6 @@
 # bi0inf0rmatics
 
-For new users, some packages that are needed to run this program: 
+#### For new users, some packages that are needed to run this program:
 
 Python packages: 
 - rpy2
@@ -15,7 +15,7 @@ R packages (within anaconda/miniconda):
 - STRINGdb
 - org.Hs.eg.db
 
-How many functions does the program contain? 
+#### How many functions does the program contain? 
 
 Functions for mapping DrugBank and STITCH: 
 - STITCHfilter() --> Filters STITCH dataset by a confidence score of 0.7 or higher. This could be done using import sys and then taking the last column. If the value in that column is higher than or equal to 700 the line needs to be written to another file.  
@@ -66,5 +66,5 @@ Functions for getting the last ranking:
 Functions for getting the last ranking:  
 - LastRanking() --> The list will be ranked by the average ranking.
 
-Extra scripts:
+#### Extra scripts:
 Statistics Drugs & Targets.ipynb --> This code is reserved for any kind of statistic that needs to be done to the output of any of the functions. 
