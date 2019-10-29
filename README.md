@@ -2,14 +2,14 @@
 
 ### For new users, some packages that are needed to run this program:
 
-Python packages: 
+*Python packages:* 
 - [rpy2](https://anaconda.org/r/rpy2)
 - [pandas](https://anaconda.org/anaconda/pandas)
 - [numpy](https://anaconda.org/anaconda/numpy)
 - [scipy](https://anaconda.org/anaconda/scipy)
 - [requests](https://anaconda.org/anaconda/requests)
 
-R packages (within anaconda/miniconda): 
+*R packages (within anaconda/miniconda):*
 - [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html)
 - [ReactomePA](https://bioconductor.org/packages/release/bioc/html/ReactomePA.html) 
 - [STRINGdb](https://www.bioconductor.org/packages/release/bioc/html/STRINGdb.html)
