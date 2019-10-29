@@ -3,17 +3,17 @@
 ### For new users, some packages that are needed to run this program:
 
 Python packages: 
-- rpy2
-- pandas
-- numpy
-- scipy
-- requests
+- [rpy2](https://anaconda.org/r/rpy2)
+- [pandas](https://anaconda.org/anaconda/pandas)
+- [numpy](https://anaconda.org/anaconda/numpy)
+- [scipy](https://anaconda.org/anaconda/scipy)
+- [requests](https://anaconda.org/anaconda/requests)
 
 R packages (within anaconda/miniconda): 
-- clusterProfiler
-- ReactomePA 
-- STRINGdb
-- org.Hs.eg.db
+- [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html)
+- [ReactomePA](https://bioconductor.org/packages/release/bioc/html/ReactomePA.html) 
+- [STRINGdb](https://www.bioconductor.org/packages/release/bioc/html/STRINGdb.html)
+- [org.Hs.eg.db](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
 
 ### How many functions does the program contain? 
 
