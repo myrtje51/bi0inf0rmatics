@@ -8,6 +8,7 @@
 - [numpy](https://anaconda.org/anaconda/numpy)
 - [scipy](https://anaconda.org/anaconda/scipy)
 - [requests](https://anaconda.org/anaconda/requests)
+- [statsmodels](https://pypi.org/project/statsmodels/)
 
 *R packages (within anaconda/miniconda):*
 - [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html)
