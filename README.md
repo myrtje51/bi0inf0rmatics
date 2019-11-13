@@ -21,7 +21,7 @@ Drfeelgood is a package that takes a list of genes (preferably an R-array which 
 These enrichments are then ranked by their pvalue. When the lists have been ranked an average ranking is calculated. A list of drugs will be returned sorted by the average ranking. 
 
 ### What classes does the package contain?
-- ____init____.py 
+- "__init__".py 
 - biomart.py
 - databases.py
 - drfeelgood.py
