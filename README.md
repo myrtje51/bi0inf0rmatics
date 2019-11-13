@@ -23,7 +23,12 @@ These enrichments are then ranked by their pvalue. When the lists have been rank
 ### What classes does the package contain?
 - __init__.py 
 - biomart.py
+  In case you want to turn ensembl protein id's into entrez gene id's. 
 - databases.py
+  Preps all the databases and does the first enrichment. 
 - drfeelgood.py
+  Calls the first enrichments and initiates the second enrichment. 
 - proteinset.py
+  Code for an enrichment. 
 - ranking.py
+  Contains code for the first and final ranking. The first ranking just ranks the enriched lists from the second enrichment.     The final ranking calculated an average ranking and sorts the dataframe based of that ranking. 
