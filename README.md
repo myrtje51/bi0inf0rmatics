@@ -20,3 +20,10 @@
 Drfeelgood is a package that takes a list of genes (preferably an R-array which can be read from a file) and enriches this list of genes against a few different biological levels (KEGG, reactome, GO and protein-protein interactions). It then enriches the lists that come out of the first enrichments against a dataset containing drugs with their corresponding targets. This enrichment is done with only the fisher's exact test. 
 These enrichments are then ranked by their pvalue. When the lists have been ranked an average ranking is calculated. A list of drugs will be returned sorted by the average ranking. 
 
+### What classes does the package contain?
+- ____init____.py 
+- biomart.py
+- databases.py
+- drfeelgood.py
+- proteinset.py
+- ranking.py
