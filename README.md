@@ -21,14 +21,11 @@ Drfeelgood is a package that takes a list of genes (preferably an R-array which 
 These enrichments are then ranked by their pvalue. When the lists have been ranked an average ranking is calculated. A list of drugs will be returned sorted by the average ranking. 
 
 ### What classes does the package contain?
-- __init__.py 
-- biomart.py
-  In case you want to turn ensembl protein id's into entrez gene id's. 
-- databases.py
-  Preps all the databases and does the first enrichment. 
-- drfeelgood.py
-  Calls the first enrichments and initiates the second enrichment. 
-- proteinset.py
-  Code for an enrichment. 
-- ranking.py
-  Contains code for the first and final ranking. The first ranking just ranks the enriched lists from the second enrichment.     The final ranking calculated an average ranking and sorts the dataframe based of that ranking. 
+- __init__.py   : To tell Python this is a package. 
+- biomart.py    : In case you want to turn ensembl protein id's into entrez gene id's. 
+- databases.py  : Preps all the databases and does the first enrichment. 
+- drfeelgood.py : Calls the first enrichments and initiates the second enrichment. 
+- proteinset.py : Code for an enrichment. 
+- ranking.py    : Contains code for the first and final ranking. The first ranking just ranks the enriched lists from the
+                  second enrichment. The final ranking calculated an average ranking and sorts the dataframe based of that
+                  ranking. 
