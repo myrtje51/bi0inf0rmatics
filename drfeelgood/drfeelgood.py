@@ -142,7 +142,7 @@ class GiveMeTheDrugs(object):
         self.FR = r.ranking2() 
         return self.FR
     
-    def rocauc_maker(self):
+    def rocauc_maker(self, source):
         """
         Function:
         ----------
@@ -152,7 +152,7 @@ class GiveMeTheDrugs(object):
         RA = RocAuc() 
         names = list(self.FR.columns)
         
-        true_pos = RA.readfilter_databases()
+        true_pos = RA.readfilter_databases(source)
         self.FR['TP'] = self.FR.drug.isin(true_pos)
         
         roc = [ RA.ROC(self.FR, r) for r in names[1:] ]
