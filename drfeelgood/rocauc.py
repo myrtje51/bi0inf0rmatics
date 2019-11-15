@@ -3,7 +3,7 @@ import pandas as pd
 
 class RocAuc(object): 
     
-    def readfilter_databases(self):
+    def readfilter_databases(self, source):
         """
         Function:
         ----------
@@ -22,19 +22,13 @@ class RocAuc(object):
         DADT_pro = all the pro-longevity drugs present in both the DrugAge dataset and the mapped dataset.
         
         """
-        drugAge = pd.read_csv('drugage.csv')
         mapped = pd.read_csv('mapped_DB_STITCH_actions_first.tsv', sep='\t')
-    
-        pro_longevity = drugAge[drugAge['avg_lifespan_change'] > 0]
-        anti_longevity = drugAge[drugAge['avg_lifespan_change'] < 0]
-        
-        DA_list_anti = set(anti_longevity['compound_name'].unique())
-        DA_list_pro = set(pro_longevity['compound_name'].unique())
+  
         DT_list = set(mapped['Name'].unique())
     
-        DADT_pro = DA_list_pro & DT_list
+        DADT_pro = source & DT_list
         
-        return DA_list_pro
+        return source
     
     def ROC(self, df, rank):
         """
