@@ -26,21 +26,28 @@ class GiveMeTheDrugs(object):
 
         Variables: 
         ----------
-        self.ensembl = all the target proteins from the STITCH database. 
+        self.ensembl               = all the target proteins from the STITCH database. 
         self.get_entr_filtered_ens = all the ensembl proteins turned into gene ID's.
-        acr_res = dictionary of gene_list: and a list of genes. 
-        gene_set = a list of ageing related genes.
-        clusterProfiler = the package: clusterProfiler imported using rpy2.
-        ReactomePA = the package: ReactomePA imported using rpy2.
-        KEGG_res = the enrichment called where the Drug-Target dataset gets enriched against the first enrichent done. 
-        GO_MF_en_res = the enrichment called where the Drug-Target dataset gets enriched against the first enrichment done.
-        GO_CC_en_res = the enrichment called where the Drug-Target dataset gets enriched against the first enrichment done.  
-        GO_BP_en_res = the enrichment called where the Drug-Target dataset gets enriched against the first enrichment done.  
-        reactome_en_res = the enrichment called where the Drug-Target dataset gets enriched against the first enrichment done. 
-        PPI_rest = the enrichment called where the Drug-Target dataset gets enriched against the first enrichment done.
-        GOI = the enrichment called where the Drug-Target dataset gets enriched against the ageing related genelist.
-        self.PS = list with all the enrichments classes called. 
-        self.dictio_drugs = calls the function: make_dictio_DT() 
+        acr_res                    = dictionary of gene_list: and a list of genes. 
+        gene_set                   = a list of ageing related genes.
+        clusterProfiler            = the package: clusterProfiler imported using rpy2.
+        ReactomePA                 = the package: ReactomePA imported using rpy2.
+        KEGG_res                   = the enrichment called where the Drug-Target dataset gets enriched against the first
+                                     enrichent done. 
+        GO_MF_en_res               = the enrichment called where the Drug-Target dataset gets enriched against the first
+                                     enrichment done.
+        GO_CC_en_res               = the enrichment called where the Drug-Target dataset gets enriched against the first
+                                     enrichment done.  
+        GO_BP_en_res               = the enrichment called where the Drug-Target dataset gets enriched against the first
+                                     enrichment done.  
+        reactome_en_res            = the enrichment called where the Drug-Target dataset gets enriched against the first
+                                     enrichment done. 
+        PPI_rest                   = the enrichment called where the Drug-Target dataset gets enriched against the first
+                                     enrichment done.
+        GOI                        = the enrichment called where the Drug-Target dataset gets enriched against the ageing related
+                                     genelist.
+        self.PS                    = list with all the enrichments classes called. 
+        self.dictio_drugs          = calls the function: make_dictio_DT() 
         """
         
         ensembl = pd.read_csv('/home/mhaan/STITCH_proteins.txt')
@@ -105,8 +112,8 @@ class GiveMeTheDrugs(object):
         
         Variables:
         ----------
-        super_x = list with the top results for every drug in every database. 
-        df = the dataframe with the enrichment results (the really low results are in there as well)
+        super_x               = list with the top results for every drug in every database. 
+        df                    = the dataframe with the enrichment results (the really low results are in there as well)
         self.drug_enrichments = all the top results for every drug in every database in a dataframe. 
         """
 
@@ -125,8 +132,12 @@ class GiveMeTheDrugs(object):
         """
         Function:
         ----------
+        This function gives each drug a ranking from each database. This is still without the average ranking. 
+        
         Variables:
         ----------
+        enrichment = a dataframe with the enrichment results. 
+        r          = calls the class Ranking() 
         """
         r = Ranking(enrichment)
         return r.ranking1() 
@@ -135,27 +146,48 @@ class GiveMeTheDrugs(object):
         """
         Function:
         ----------
+        This function calculates the average ranking of each drug based on the enrichment that is done on each biological level.
+        
         Variables:
         ----------
+        enrichment = a dataframe with the enrichment results. 
+        r          = call the class Ranking(). 
         """
         r = Ranking(enrichment)
         self.FR = r.ranking2() 
         return self.FR
     
-    def rocauc_maker(self, source):
+    def rocauc_maker(self, source, topn=None):
         """
         Function:
         ----------
+        This function calculates the AUC and plots a ROC. 
+        
         Variables: 
         ----------
+        source   = list of drugs that the program has to compare the predictions with. 
+        topn     = an integer if the user wants to only use a portion of the prediction (like the top 100 predicted drugs) 
+        RA       = calls the class RocAuc().
+        names    = a list with the names of the used databases/data (so the names of the columns).
+        true_pos = again a list of database names. 
+        roc      = a list with all the values needed for a ROC. 
+        auc      = a value (the Area Under the Curve).
+        fig      = generates a figure. 
+        ax       = generates the axes.  
         """
         RA = RocAuc() 
         names = list(self.FR.columns)
         
+        if 'TP' in names:
+            names.remove('TP')
+         
         true_pos = RA.readfilter_databases(source)
         self.FR['TP'] = self.FR.drug.isin(true_pos)
         
-        roc = [ RA.ROC(self.FR, r) for r in names[1:] ]
+        if topn is None:
+            topn = self.FR.shape[0]
+        
+        roc = [ RA.ROC(self.FR.sort_values(r).head(topn), r) for r in names[1:] ]
         auc = { r: RA.AUC(roc[i][0], roc[i][1]) for i,r in enumerate(names[1:]) }
         
         fig = plt.figure(figsize=(10,10), dpi=300)
@@ -165,5 +197,4 @@ class GiveMeTheDrugs(object):
         ax.plot([0,1],[0,1], c='r')
         ax.legend()
         ax.axis('equal')
-        
-    
+         
