@@ -13,17 +13,17 @@ class RocAuc(object):
         
         Variables:
         ----------
-        drugAge = the DrugAge dataset. 
-        mapped = the mapped drug target dataset. 
-        pro_longevity = all the pro-longevity drugs in the DrugAge dataset. 
+        drugAge        = the DrugAge dataset. 
+        mapped         = the mapped drug target dataset. 
+        pro_longevity  = all the pro-longevity drugs in the DrugAge dataset. 
         anti_longevity = all the anti_longevity drugs in the DrugAge dataset.
-        DA_list_anti = anti-longevity but made into a set.
-        DA_list_pro = pro-longevity but made into a set. 
-        DADT_pro = all the pro-longevity drugs present in both the DrugAge dataset and the mapped dataset.
+        DA_list_anti   = anti-longevity but made into a set.
+        DA_list_pro    = pro-longevity but made into a set. 
+        DADT_pro       = all the pro-longevity drugs present in both the DrugAge dataset and the mapped dataset.
         
         """
         mapped = pd.read_csv('mapped_DB_STITCH_actions_first.tsv', sep='\t')
-  
+   
         DT_list = set(mapped['Name'].unique())
     
         DADT_pro = source & DT_list
@@ -38,14 +38,14 @@ class RocAuc(object):
         
         Variables:
         ----------
-        df = a dataframe with a ranking.
-        roc = a list with points for a plot. 
-        tp = true postives
-        tn = true negatives
-        fp = false positives
-        fn = false negatives
-        tpr = true positive rate
-        fpr = false positive rate 
+        df      = a dataframe with a ranking.
+        roc     = a list with points for a plot. 
+        tp      = true postives
+        tn      = true negatives
+        fp      = false positives
+        fn      = false negatives
+        tpr     = true positive rate
+        fpr     = false positive rate 
         new_roc = to avoid two of the same tpr/fpr right after the other. 
         """
         df = df.copy()
