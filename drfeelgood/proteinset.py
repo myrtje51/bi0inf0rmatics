@@ -13,7 +13,7 @@ class ProteinSet(object):
         Variables: 
         ----------
         self.proteindict = a dictionary with a term and a list of proteins per item. 
-        self.database = the name of the database. 
+        self.database    = the name of the database. 
         """
         self.proteindict = { name : set(p) for name, p in proteindict.items() }
         self.database = database
@@ -28,16 +28,16 @@ class ProteinSet(object):
         
         Variables:
         ----------
-        list_res = a list with lists that will later be turned into a dataframe. Eech list within the list will have information
-        about a row in the table. 
-        name = the name of the drug 
-        pset = a set of proteins that are targets of the drug. 
-        term = the name in a list. 
-        proteins = the proteins in a list. 
-        results = the enrichment results in a NamedTuple. 
+        list_res  = a list with lists that will later be turned into a dataframe. Eech list within the list will have information
+                    about a row in the table. 
+        name      = the name of the drug 
+        pset      = a set of proteins that are targets of the drug. 
+        term      = the name in a list. 
+        proteins  = the proteins in a list. 
+        results   = the enrichment results in a NamedTuple. 
         l_results = the enrichment results turned into a list. 
-        joined = the name of the database and the term merged with the l_results list. 
-        df_final = a dataframe with all the enrichment results. 
+        joined    = the name of the database and the term merged with the l_results list. 
+        df_final  = a dataframe with all the enrichment results. 
         """
         list_res = []
         
