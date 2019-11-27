@@ -11,8 +11,8 @@ class Biomart(object):
         Variables: 
         ----------
         self._biomart_data = a dataset containing ensembl gene id's, protein id's and transcript id's. It also con-
-        tains Entrez gene id's, Uniprot id's and the name of the gene. 
-        self._idx = a dictionary that converts the dataframe to a readable dictionary. 
+                             tains Entrez gene id's, Uniprot id's and the name of the gene. 
+        self._idx          = a dictionary that converts the dataframe to a readable dictionary. 
         """
         self._biomart_data = pd.read_csv("biomart.tsv", 
               sep='\t', 
