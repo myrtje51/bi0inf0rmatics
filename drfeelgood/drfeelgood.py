@@ -13,10 +13,12 @@ import matplotlib.pylab as plt
 import pandas as pd
 import numpy as np
 import re
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 
 class GiveMeTheDrugs(object):
-    def __init__(self, gene_list, db_list):
+    def __init__(self, gene_list, db_list=None, db_name=None):
         """
         Function: 
         ----------
@@ -68,6 +70,9 @@ class GiveMeTheDrugs(object):
         ReactomePA = rpackages.importr('ReactomePA')
         GO_database = rpackages.importr('org.Hs.eg.db') 
         
+        if db_list is None: 
+            db_list = ['bp', 'cc', 'mf', 'Genes', 'KEGG', 'reactome', 'string']
+        
         self.database_list = [x.lower() for x in db_list]
         
         self.PS = []
@@ -101,7 +106,13 @@ class GiveMeTheDrugs(object):
             GOI = ProteinSet({ "gene_list" : list(map(int, gene_list)) }, "GenesOfInterest", set(self.get_entr_filtered_ens))
             self.PS.append(GOI)
 
-        self.dictio_drugs = db.make_dictio_DT()
+        if db_name is None: 
+            print("User didn't specify which database to use. Now using the default database: DrugBank...")
+            self.dictio_drugs = db.make_dictio_DT()
+        elif db_name == "CTD" or db_name == "Comparative Toxicogenomics Database": 
+            self.dictio_drugs = db.get_CTD() 
+        elif db_name == "DB" or db_name == "DrugBank" or db_name == "drugbank":
+            self.dictio_drugs = db.make_dictio_DT() 
 
     
     def DrugDb_enrich(self):
@@ -157,7 +168,7 @@ class GiveMeTheDrugs(object):
         self.FR = r.ranking2() 
         return self.FR
     
-    def rocauc_maker(self, source, topn=None):
+    def rocauc_maker(self, source, topn=None, FiR=None):
         """
         Function:
         ----------
@@ -176,18 +187,31 @@ class GiveMeTheDrugs(object):
         ax       = generates the axes.  
         """
         RA = RocAuc() 
-        names = list(self.FR.columns)
+        if not FiR:
+            FiR = self.FR
+            
+        names = list(FiR.columns)
         
         if 'TP' in names:
             names.remove('TP')
          
         true_pos = RA.readfilter_databases(source)
-        self.FR['TP'] = self.FR.drug.isin(true_pos)
+        #self.FR['TP'] = self.FR.drug.isin(true_pos)
+        TrP = []
+        for d in list(FiR.drug):
+            fuzzystring = process.extract(d, true_pos) 
+            best = [item for item in fuzzystring if item[1] == 100]
+            if len(best) > 0: 
+                TrP.append(True)
+            elif len(best) == 0: 
+                TrP.append(False) 
+        
+        FiR['TP'] = TrP
         
         if topn is None:
-            topn = self.FR.shape[0]
+            topn = FiR.shape[0]
         
-        roc = [ RA.ROC(self.FR.sort_values(r).head(topn), r) for r in names[1:] ]
+        roc = [ RA.ROC(FiR.sort_values(r).head(topn), r) for r in names[1:] ]
         auc = { r: RA.AUC(roc[i][0], roc[i][1]) for i,r in enumerate(names[1:]) }
         
         fig = plt.figure(figsize=(10,10), dpi=300)
@@ -197,4 +221,5 @@ class GiveMeTheDrugs(object):
         ax.plot([0,1],[0,1], c='r')
         ax.legend()
         ax.axis('equal')
-         
+        
+    
