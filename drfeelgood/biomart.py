@@ -57,4 +57,10 @@ class Biomart(object):
         Turns a Entrez list of gene id's into a list of ensembl protein id's. 
         """
         return self._get_index("Entrez","protein").get(int(e),None)
+    
+    def name_to_entrez(self, n):
+        """
+        """
+        e = self._get_index("name", "Entrez").get(n,None) 
+        return None if pd.isna(e) else int(e) 
 
