@@ -68,3 +68,4 @@ class Ranking(object):
         df_final = df_final.sort_values(by=['ranking_avg'])
     
         return df_final
+
