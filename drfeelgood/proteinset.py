@@ -85,3 +85,6 @@ class ProteinSet(object):
             return resTuple(oddsratio, chi2, p, table, method)
 
 
+
+
+
