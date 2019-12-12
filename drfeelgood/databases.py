@@ -1,3 +1,4 @@
+from .proteinset import ProteinSet
 from .biomart import Biomart 
 bm = Biomart() 
 from rpy2.robjects.vectors import StrVector
@@ -35,6 +36,38 @@ class Databases(object):
         dictio = {k: v for k, v in dictio.items() if len(v) > 2}
         
         return dictio 
+    
+    def get_CTD(self):
+        """
+        Function:
+        ----------
+        This function turns the CTD database into a dictionary with drugs and their gene targets (names)
+        
+        Variables: 
+        ----------
+        drug_genes = dictionary with drugs and targets. 
+        fields_CD  = splits the line into fields that are seperated by a tab (\t). The first field is the drug, the 
+                     sixth field is the gene that is targets. 
+        
+        """
+        chemgene = pd.read_csv('CTD_chem_gene_ixns.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','GeneSymbol','GeneID','GeneForms','Organism','OrganismID','Interaction','InteractionActions','PubMedIDs'])
+        chemgeneH = chemgene[chemgene['Organism'] == 'Homo sapiens']
+        chemgeneH = chemgeneH.drop(columns=['ChemicalID', 'CasRN', 'OrganismID', 'PubMedIDs'])
+        
+        chemdis = pd.read_csv('CTD_chemicals_diseases.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','DiseaseName','DiseaseID','DirectEvidence','InferenceGeneSymbol','InferenceScore','OmimIDs','PubMedIDs'])
+        chemdisT = chemdis[chemdis['DirectEvidence'] == 'therapeutic']
+        chemdisT = chemdisT.drop(columns=['OmimIDs', 'PubMedIDs', 'DiseaseID', 'InferenceGeneSymbol', 'InferenceScore', 'DiseaseName'])
+        
+        THmerge = pd.merge(chemgeneH, chemdisT, on='ChemicalName')
+        THmerge = THmerge.drop_duplicates() 
+        
+        drug_genes = {}
+        for i in THmerge['ChemicalName'].unique(): 
+            drug_genes[i] = set([THmerge['GeneID'][j] for j in THmerge[THmerge['ChemicalName']==i].index]) 
+        
+        drug_genes = {k: v for k, v in drug_genes.items() if len(v) > 2}
+        
+        return drug_genes  
         
     def cluster_profiler_KEGG(self, clusterProfiler, data): 
         """
@@ -321,5 +354,8 @@ class Databases(object):
         D = { k : v for (k,v) in D.items() if len(v) > 0 }
         
         return ProteinSet(D, "String", set(get_entr_filtered_ens))
+
+
+
 
 
