@@ -28,28 +28,9 @@ class GiveMeTheDrugs(object):
 
         Variables: 
         ----------
-        self.ensembl               = all the target proteins from the STITCH database. 
-        self.get_entr_filtered_ens = all the ensembl proteins turned into gene ID's.
-        acr_res                    = dictionary of gene_list: and a list of genes. 
-        gene_set                   = a list of ageing related genes.
-        clusterProfiler            = the package: clusterProfiler imported using rpy2.
-        ReactomePA                 = the package: ReactomePA imported using rpy2.
-        KEGG_res                   = the enrichment called where the Drug-Target dataset gets enriched against the first
-                                     enrichent done. 
-        GO_MF_en_res               = the enrichment called where the Drug-Target dataset gets enriched against the first
-                                     enrichment done.
-        GO_CC_en_res               = the enrichment called where the Drug-Target dataset gets enriched against the first
-                                     enrichment done.  
-        GO_BP_en_res               = the enrichment called where the Drug-Target dataset gets enriched against the first
-                                     enrichment done.  
-        reactome_en_res            = the enrichment called where the Drug-Target dataset gets enriched against the first
-                                     enrichment done. 
-        PPI_rest                   = the enrichment called where the Drug-Target dataset gets enriched against the first
-                                     enrichment done.
-        GOI                        = the enrichment called where the Drug-Target dataset gets enriched against the ageing related
-                                     genelist.
-        self.PS                    = list with all the enrichments classes called. 
-        self.dictio_drugs          = calls the function: make_dictio_DT() 
+        gene_list = list of genes the user wants to find drugs for. 
+        db_list   = list with biological levels that the user wants to use. 
+        db_name   = Name of the drug-target database that the user wants to use (CTD or DrugBank). 
         """
         
         ensembl = pd.read_csv('/home/mhaan/STITCH_proteins.txt')
@@ -121,11 +102,9 @@ class GiveMeTheDrugs(object):
         ----------
         This function does all the enrichments that were previously called with the function ProteinSet(object).
         
-        Variables:
+        Returns:
         ----------
-        super_x               = list with the top results for every drug in every database. 
-        df                    = the dataframe with the enrichment results (the really low results are in there as well)
-        self.drug_enrichments = all the top results for every drug in every database in a dataframe. 
+        self.drug_enrichments = a dataframe with all the enrichments that were done (unranked). 
         """
 
         super_x = []
@@ -147,8 +126,11 @@ class GiveMeTheDrugs(object):
         
         Variables:
         ----------
-        enrichment = a dataframe with the enrichment results. 
-        r          = calls the class Ranking() 
+        enrichment = a dataframe with the enrichment results.
+        
+        Returns: 
+        ----------
+        The results of the function: ranking1().
         """
         r = Ranking(enrichment)
         return r.ranking1() 
@@ -162,7 +144,10 @@ class GiveMeTheDrugs(object):
         Variables:
         ----------
         enrichment = a dataframe with the enrichment results. 
-        r          = call the class Ranking(). 
+        
+        Returns:
+        ----------
+        self.FR = the results of ranking2() a.k.a. the final ranking. 
         """
         r = Ranking(enrichment)
         self.FR = r.ranking2() 
@@ -178,13 +163,8 @@ class GiveMeTheDrugs(object):
         ----------
         source   = list of drugs that the program has to compare the predictions with. 
         topn     = an integer if the user wants to only use a portion of the prediction (like the top 100 predicted drugs) 
-        RA       = calls the class RocAuc().
-        names    = a list with the names of the used databases/data (so the names of the columns).
-        true_pos = again a list of database names. 
-        roc      = a list with all the values needed for a ROC. 
-        auc      = a value (the Area Under the Curve).
-        fig      = generates a figure. 
-        ax       = generates the axes.  
+        FiR      = the final ranking. 
+        
         """
         RA = RocAuc() 
         if not FiR:
