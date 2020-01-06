@@ -13,13 +13,11 @@ class RocAuc(object):
         
         Variables:
         ----------
-        drugAge        = the DrugAge dataset. 
-        mapped         = the mapped drug target dataset. 
-        pro_longevity  = all the pro-longevity drugs in the DrugAge dataset. 
-        anti_longevity = all the anti_longevity drugs in the DrugAge dataset.
-        DA_list_anti   = anti-longevity but made into a set.
-        DA_list_pro    = pro-longevity but made into a set. 
-        DADT_pro       = all the pro-longevity drugs present in both the DrugAge dataset and the mapped dataset.
+        source = the database that was given by the user. 
+        
+        Returns:
+        ----------
+        source = the database that was given by the user. 
         
         """
         mapped = pd.read_csv('mapped_DB_STITCH_actions_first.tsv', sep='\t')
@@ -39,14 +37,11 @@ class RocAuc(object):
         Variables:
         ----------
         df      = a dataframe with a ranking.
-        roc     = a list with points for a plot. 
-        tp      = true postives
-        tn      = true negatives
-        fp      = false positives
-        fn      = false negatives
-        tpr     = true positive rate
-        fpr     = false positive rate 
-        new_roc = to avoid two of the same tpr/fpr right after the other. 
+        rank    = a name of the database that was used to make the ranking. 
+        
+        Returns: 
+        ---------
+        Two lists of ROC's. 
         """
         df = df.copy()
         df.ranking = df[rank]
@@ -78,10 +73,21 @@ class RocAuc(object):
         
         Variables: 
         ----------
-        auc = the Area Under the Curve. 
+        fpr = False Positive Rate.
+        tpr = True Positive Rate. 
+        
+        Returns: 
+        ---------
+        pauc = The (partial) Area Under the Curve. 
         
         """
         auc = 0
         for i in range(len(fpr)-1):
+            if fpr[i] >= topn:
+                auc += (topn-fpr[i-1]) * tpr[i-1]
+                break
             auc += (fpr[i+1] - fpr[i]) * tpr[i]
-        return auc
+        
+        surface = tpr[-1]*topn
+        pauc = auc/surface
+        return pauc
