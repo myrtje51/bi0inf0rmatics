@@ -29,3 +29,4 @@ These enrichments are then ranked by their pvalue. When the lists have been rank
 - ranking.py    : Contains code for the first and final ranking. The first ranking just ranks the enriched lists from the
                   second enrichment. The final ranking calculated an average ranking and sorts the dataframe based of that
                   ranking. 
+- aucroc.py     : This piece of code calculates the AUC and can make an ROC (optional). 
