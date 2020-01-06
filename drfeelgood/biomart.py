@@ -7,12 +7,7 @@ class Biomart(object):
         Function: 
         ----------
         Making variables that are going to be used throughout the whole code. 
-        
-        Variables: 
-        ----------
-        self._biomart_data = a dataset containing ensembl gene id's, protein id's and transcript id's. It also con-
-                             tains Entrez gene id's, Uniprot id's and the name of the gene. 
-        self._idx          = a dictionary that converts the dataframe to a readable dictionary. 
+         
         """
         self._biomart_data = pd.read_csv("biomart.tsv", 
               sep='\t', 
@@ -29,7 +24,12 @@ class Biomart(object):
         
         Variables: 
         ----------
-        k = contains the column that the list starts from and the column that the list should become. 
+        col_from = from what it needs to be translated.
+        col_to   = to what it needs to be translated. 
+        
+        Results: 
+        ----------
+        self._idx = dictionary with the translation. 
         """
         k = (col_from, col_to)
         if k not in self._idx:
@@ -45,7 +45,11 @@ class Biomart(object):
         
         Variables: 
         ----------
-        e = the protein list that is turned into a list of entrez genes. 
+        p = a protein that needs to be translated. 
+        
+        Returns:
+        ---------
+        None is it can't find a translation, else the translation (entrez id). 
         """
         e = self._get_index("protein","Entrez").get(p,None)
         return None if pd.isna(e) else int(e)
@@ -55,11 +59,30 @@ class Biomart(object):
         Function: 
         ----------
         Turns a Entrez list of gene id's into a list of ensembl protein id's. 
+        
+        Variables: 
+        ----------
+        e = an entrez id that needs to be translated. 
+        
+        Returns:
+        ----------
+        the translation(s) of the entrez id to protein id's (ensembl). 
         """
         return self._get_index("Entrez","protein").get(int(e),None)
     
     def name_to_entrez(self, n):
         """
+        Function: 
+        -----------
+        Turns a gene name into an entrez gene id. 
+        
+        Variabeles: 
+        -----------
+        n = a gene name that needs to be translated.
+        
+        Returns:
+        -----------
+        None if there is no translation, else the translation (entrez id). 
         """
         e = self._get_index("name", "Entrez").get(n,None) 
         return None if pd.isna(e) else int(e) 
