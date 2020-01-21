@@ -81,13 +81,25 @@ class RocAuc(object):
         pauc = The (partial) Area Under the Curve. 
         
         """
-        auc = 0
+        auc = 0.0
+        newtpr = 1.0
+        
+        fpr = [0] + list(fpr)
+        tpr = [0] + list(tpr)
+        
         for i in range(len(fpr)-1):
+            i = i+1
             if fpr[i] >= topn:
+                newtpr = tpr[i]
                 auc += (topn-fpr[i-1]) * tpr[i-1]
                 break
-            auc += (fpr[i+1] - fpr[i]) * tpr[i]
-        
-        surface = tpr[-1]*topn
-        pauc = auc/surface
+            auc += (fpr[i] - fpr[i-1]) * tpr[i-1]
+    
+        surface = newtpr*topn
+       
+        if surface > 0:
+            pauc = auc/float(surface) 
+        else: 
+            pauc = 0
+    
         return pauc
