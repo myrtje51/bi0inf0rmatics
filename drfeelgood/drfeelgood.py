@@ -31,8 +31,7 @@ class GiveMeTheDrugs(object):
         gene_list = list of genes the user wants to find drugs for. 
         db_list   = list with biological levels that the user wants to use. 
         db_name   = Name of the drug-target database that the user wants to use (CTD or DrugBank). 
-        """
-        
+        """ 
         ensembl = pd.read_csv('/home/mhaan/STITCH_proteins.txt')
         ensembl = list(ensembl['protein'])
         self.ensembl = ensembl
@@ -106,7 +105,6 @@ class GiveMeTheDrugs(object):
         ----------
         self.drug_enrichments = a dataframe with all the enrichments that were done (unranked). 
         """
-
         super_x = []
         for i, (drugs, targets) in enumerate(self.dictio_drugs.items()):
             print("%d/%d: %s" % (i+1, len(self.dictio_drugs), drugs))
@@ -167,7 +165,8 @@ class GiveMeTheDrugs(object):
         
         """
         RA = RocAuc() 
-        if not FiR:
+        
+        if isinstance(FiR, type(None)):
             FiR = self.FR
             
         names = list(FiR.columns)
@@ -176,7 +175,6 @@ class GiveMeTheDrugs(object):
             names.remove('TP')
          
         true_pos = RA.readfilter_databases(source)
-        #self.FR['TP'] = self.FR.drug.isin(true_pos)
         TrP = []
         for d in list(FiR.drug):
             fuzzystring = process.extract(d, true_pos) 
@@ -189,17 +187,17 @@ class GiveMeTheDrugs(object):
         FiR['TP'] = TrP
         
         if topn is None:
-            topn = FiR.shape[0]
+            topn = 1
         
-        roc = [ RA.ROC(FiR.sort_values(r).head(topn), r) for r in names[1:] ]
-        auc = { r: RA.AUC(roc[i][0], roc[i][1]) for i,r in enumerate(names[1:]) }
+        roc = [ RA.ROC(FiR.sort_values(r), r) for r in names[1:] ]
+        auc = { r: RA.AUC(roc[i][0], roc[i][1], topn) for i,r in enumerate(names[1:]) }
         
         fig = plt.figure(figsize=(10,10), dpi=300)
         ax = plt.gca()
         for i,r in enumerate(names[1:]):
-            ax.plot(roc[i][0], roc[i][1], label='%s: %f' % (r, auc[r]))
-        ax.plot([0,1],[0,1], c='r')
+            ax.plot([ name for name in roc[i][0] if name <= topn ], roc[i][1][:len([ name for name in roc[i][0] if name <= topn ])], label='%s: %f' % (r, auc[r]))
+        x_lims = ax.get_xlim()
+        y_lims = ax.get_ylim()
+        ax.plot(x_lims,y_lims, c='r')
         ax.legend()
-        ax.axis('equal')
-        
-    
+        return auc
