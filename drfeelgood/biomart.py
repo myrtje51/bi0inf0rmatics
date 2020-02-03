@@ -86,4 +86,22 @@ class Biomart(object):
         """
         e = self._get_index("name", "Entrez").get(n,None) 
         return None if pd.isna(e) else int(e) 
+    
+    def gene_to_name(self, g):
+        """
+        Function:
+        ----------
+        Turns an Ensembl gene id into a gene name. 
+        
+        Variables:
+        -----------
+        g = an Ensembl gene id that needs to be translated. 
+        
+        Returns:
+        -----------
+        n = None if there is no corresponding name, otherwise the corresponding gene name.
+        """
+        n = self._get_index("gene", "name").get(g,None) 
+        return n
+
 
