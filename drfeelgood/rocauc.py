@@ -65,7 +65,7 @@ class RocAuc(object):
         
         return list(zip(*new_roc))
     
-    def AUC(self, fpr, tpr):
+    def AUC(self, fpr, tpr, topn=1):
         """
         Function: 
         ----------
