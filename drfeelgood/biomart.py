@@ -9,7 +9,7 @@ class Biomart(object):
         Making variables that are going to be used throughout the whole code. 
          
         """
-        self._biomart_data = pd.read_csv("biomart.tsv", 
+        self._biomart_data = pd.read_csv("~/drfeelgood/Files/biomart.tsv", 
               sep='\t', 
               names=["gene", "transcript", "protein", "Entrez", "Uniprot", "name"])
         self._biomart_data = self._biomart_data.applymap(lambda x: None if pd.isna(x) else x)
