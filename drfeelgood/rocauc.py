@@ -20,7 +20,7 @@ class RocAuc(object):
         source = the database that was given by the user. 
         
         """
-        mapped = pd.read_csv('mapped_DB_STITCH_actions_first.tsv', sep='\t')
+        mapped = pd.read_csv('~/drfeelgood/Files/mapped_DB_STITCH_actions_first.tsv', sep='\t')
    
         DT_list = set(mapped['Name'].unique())
     
