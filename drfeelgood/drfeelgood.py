@@ -32,7 +32,7 @@ class GiveMeTheDrugs(object):
         db_list   = list with biological levels that the user wants to use. 
         db_name   = Name of the drug-target database that the user wants to use (CTD or DrugBank). 
         """ 
-        ensembl = pd.read_csv('/home/mhaan/STITCH_proteins.txt')
+        ensembl = pd.read_csv('~/drfeelgood/Files/STITCH_proteins.txt')
         ensembl = list(ensembl['protein'])
         self.ensembl = ensembl
         
