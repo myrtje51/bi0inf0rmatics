@@ -20,7 +20,7 @@ class Databases(object):
         ----------
         dictio = a dictionary with a drug and the corresponding targets (proteins). Where the drug has two or more targets. 
         """
-        mapped = pd.read_csv('mapped_DB_STITCH_actions_first.tsv', sep='\t')
+        mapped = pd.read_csv('~/drfeelgood/Files/mapped_DB_STITCH_actions_first.tsv', sep='\t')
         mapped['item_id_b'] = mapped['item_id_b'].map(lambda x: x.lstrip('9606.'))
         mapped = mapped[['CID', 'InChIKey', 'DrugBank ID', 'Name', 'item_id_b']].drop_duplicates()
         
@@ -47,11 +47,11 @@ class Databases(object):
         drug_genes = a dictionary with a drug and the corresponding targets (proteins). Where the drug has two or more targets.
         
         """
-        chemgene = pd.read_csv('CTD_chem_gene_ixns.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','GeneSymbol','GeneID','GeneForms','Organism','OrganismID','Interaction','InteractionActions','PubMedIDs'])
+        chemgene = pd.read_csv('~/drfeelgood/Files/CTD_chem_gene_ixns.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','GeneSymbol','GeneID','GeneForms','Organism','OrganismID','Interaction','InteractionActions','PubMedIDs'])
         chemgeneH = chemgene[chemgene['Organism'] == 'Homo sapiens']
         chemgeneH = chemgeneH.drop(columns=['ChemicalID', 'CasRN', 'OrganismID', 'PubMedIDs'])
         
-        chemdis = pd.read_csv('CTD_chemicals_diseases.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','DiseaseName','DiseaseID','DirectEvidence','InferenceGeneSymbol','InferenceScore','OmimIDs','PubMedIDs'])
+        chemdis = pd.read_csv('~/drfeelgood/Files/CTD_chemicals_diseases.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','DiseaseName','DiseaseID','DirectEvidence','InferenceGeneSymbol','InferenceScore','OmimIDs','PubMedIDs'])
         chemdisT = chemdis[chemdis['DirectEvidence'] == 'therapeutic']
         chemdisT = chemdisT.drop(columns=['OmimIDs', 'PubMedIDs', 'DiseaseID', 'InferenceGeneSymbol', 'InferenceScore', 'DiseaseName'])
         
@@ -331,7 +331,7 @@ class Databases(object):
         """
         
         # Strip the 9606. from the identifiers!
-        string = pd.read_csv('protein_links_v11.0_0.9.tsv', sep=' ')
+        string = pd.read_csv('~/drfeelgood/Files/protein_links_v11.0_0.9.tsv', sep=' ')
         string['protein']  = string['protein'].map(lambda x: x.lstrip('9606.'))
         string['chemical'] = string['chemical'].map(lambda x: x.lstrip('9606.'))
         filt = string[string.protein.isin(get_ensp_filtered) | string.chemical.isin(get_ensp_filtered)]
