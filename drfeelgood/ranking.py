@@ -10,7 +10,7 @@ class Ranking(object):
         
         Variables: 
         ----------
-        enrich_ME = de enrichment results from the GiveMeTheDrugs() class, the user can give this as input if he/she
+        self.enrich_ME = de enrichment results from the GiveMeTheDrugs() class, the user can give this as input if he/she
                          wants to get back a ranking. 
         """
         self.enrich_ME = enrich_ME
@@ -21,9 +21,16 @@ class Ranking(object):
         ----------
         Ranking all the different biological levels. 
         
-        Returns:
+        Variables:
         ----------
-        list_w_ranking = list with the different rankings. 
+        only_KEGG      = the dataframe (from the enrichment) filtered to be only from the KEGG database.
+        only_GO_MF     = the dataframe (from the enrichment) filtered to be only from the GO: molecular functions database. 
+        only_GO_CC     = the dataframe (from the enrichment) filtered to be only from the GO: cellular component database. 
+        only_GO_BP     = the dataframe (from the enrichment) filtered to be only from the GO: biological process database. 
+        only_reactome  = the dataframe (from the enrichment) filtered to be only from the reactome database. 
+        only_gene_list = the dataframe (from the enrichment) filtered to be only from the given gene list. 
+        only_string    = the dataframe (from the enrichment) filtered to be only from STRING (PPI's). 
+        list_w_ranking = a list with all the ranked enrichment results. 
         """
         list_w_ranking = []
         for d in self.enrich_ME.Database.unique():
@@ -39,9 +46,13 @@ class Ranking(object):
         ----------
         Calculating an average ranking from the different rankings made in the function: first_ranking(). 
         
-        Returns:
+        Variables:
         ----------
-        df_final = the final dataframe with the ranked drugs for every biological level. 
+        res       = the results of the first ranking. 
+        for_final = a list with just the names of the drugs in each ranking and the corresponding ranking. 
+        name      = the drug name.
+        df_final  = the final dataframe containing all the different rankings and the average ranking of the drugs. This dataframe 
+                    is sorted by the average ranking. This variable is also returned by the function. 
         """
         res = self.ranking1()
         
@@ -57,4 +68,3 @@ class Ranking(object):
         df_final = df_final.sort_values(by=['ranking_avg'])
     
         return df_final
-
