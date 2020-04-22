@@ -28,10 +28,11 @@ class GiveMeTheDrugs(object):
 
         Variables: 
         ----------
-        gene_list = list of genes the user wants to find drugs for. 
-        db_list   = list with biological levels that the user wants to use. 
-        db_name   = Name of the drug-target database that the user wants to use (CTD or DrugBank). 
-        """ 
+        self.ensembl               = all the target proteins from the STITCH database. 
+        self.get_entr_filtered_ens = all the ensembl proteins turned into gene ID's.
+        acr_res                    = dictionary of gene_list: and a list of genes. 
+        """
+        
         ensembl = pd.read_csv('~/drfeelgood/Files/STITCH_proteins.txt')
         ensembl = list(ensembl['protein'])
         self.ensembl = ensembl
@@ -40,6 +41,7 @@ class GiveMeTheDrugs(object):
         self.get_entr_filtered_ens = get_entr_filtered_ens
         self.get_entr_filtered_ens = [i for i in self.get_entr_filtered_ens if i]
         
+        gene_list = robjects.IntVector(gene_list)
         gene_set1 = list(gene_list)
         gene_set = list(map(int, gene_set1))
         
@@ -85,7 +87,7 @@ class GiveMeTheDrugs(object):
             print("prep genes of interest")
             GOI = ProteinSet({ "gene_list" : list(map(int, gene_list)) }, "GenesOfInterest", set(self.get_entr_filtered_ens))
             self.PS.append(GOI)
-
+            
         if db_name is None: 
             print("User didn't specify which database to use. Now using the default database: DrugBank...")
             self.dictio_drugs = db.make_dictio_DT()
@@ -101,9 +103,11 @@ class GiveMeTheDrugs(object):
         ----------
         This function does all the enrichments that were previously called with the function ProteinSet(object).
         
-        Returns:
+        Variables:
         ----------
-        self.drug_enrichments = a dataframe with all the enrichments that were done (unranked). 
+        super_x               = list with the top results for every drug in every database. 
+        df                    = the dataframe with the enrichment results (the really low results are in there as well)
+        self.drug_enrichments = all the top results for every drug in every database in a dataframe. 
         """
         super_x = []
         for i, (drugs, targets) in enumerate(self.dictio_drugs.items()):
@@ -112,8 +116,8 @@ class GiveMeTheDrugs(object):
             if len(df) != 0:
                 df['drug'] = drugs
                 df = df.sort_values("pvalue").groupby("Database", as_index=False).first() 
-            super_x.append(df)
-        self.drug_enrichments = pd.concat(super_x)
+            super_x.append(df) 
+        self.drug_enrichments = pd.concat(super_x) 
         return self.drug_enrichments
     
     def first_ranking(self, enrichment):
@@ -124,11 +128,8 @@ class GiveMeTheDrugs(object):
         
         Variables:
         ----------
-        enrichment = a dataframe with the enrichment results.
-        
-        Returns: 
-        ----------
-        The results of the function: ranking1().
+        enrichment = a dataframe with the enrichment results. 
+        r          = calls the class Ranking() 
         """
         r = Ranking(enrichment)
         return r.ranking1() 
@@ -142,10 +143,7 @@ class GiveMeTheDrugs(object):
         Variables:
         ----------
         enrichment = a dataframe with the enrichment results. 
-        
-        Returns:
-        ----------
-        self.FR = the results of ranking2() a.k.a. the final ranking. 
+        r          = call the class Ranking(). 
         """
         r = Ranking(enrichment)
         self.FR = r.ranking2() 
@@ -161,8 +159,13 @@ class GiveMeTheDrugs(object):
         ----------
         source   = list of drugs that the program has to compare the predictions with. 
         topn     = an integer if the user wants to only use a portion of the prediction (like the top 100 predicted drugs) 
-        FiR      = the final ranking. 
-        
+        RA       = calls the class RocAuc().
+        names    = a list with the names of the used databases/data (so the names of the columns).
+        true_pos = again a list of database names. 
+        roc      = a list with all the values needed for a ROC. 
+        auc      = a value (the Area Under the Curve).
+        fig      = generates a figure. 
+        ax       = generates the axes.  
         """
         RA = RocAuc() 
         
@@ -190,6 +193,7 @@ class GiveMeTheDrugs(object):
             topn = 1
         
         roc = [ RA.ROC(FiR.sort_values(r), r) for r in names[1:] ]
+        #auc = { r: RA.AUC([ name for name in roc[i][0] if name <= topn ], roc[i][1][:len([ name for name in roc[i][0] if name <= topn ])], topn) for i,r in enumerate(names[1:]) }
         auc = { r: RA.AUC(roc[i][0], roc[i][1], topn) for i,r in enumerate(names[1:]) }
         
         fig = plt.figure(figsize=(10,10), dpi=300)
@@ -201,3 +205,5 @@ class GiveMeTheDrugs(object):
         ax.plot(x_lims,y_lims, c='r')
         ax.legend()
         return auc
+        
+    
