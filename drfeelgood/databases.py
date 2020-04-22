@@ -7,6 +7,7 @@ import rpy2.robjects.packages as rpackages
 from rpy2.robjects import r, pandas2ri
 import pandas as pd
 import re
+import random
 
 class Databases(object):
     
@@ -16,9 +17,10 @@ class Databases(object):
         ----------
         This function makes a dictionary with a drug and a list of proteins that are targets of that drug.
         
-        Returns: 
+        Variable: 
         ----------
-        dictio = a dictionary with a drug and the corresponding targets (proteins). Where the drug has two or more targets. 
+        mapped = dataset with drugs and their targets. 
+        dictio = a dictionary with a drug and the corresponding targets (proteins).
         """
         mapped = pd.read_csv('~/drfeelgood/Files/mapped_DB_STITCH_actions_first.tsv', sep='\t')
         mapped['item_id_b'] = mapped['item_id_b'].map(lambda x: x.lstrip('9606.'))
@@ -42,9 +44,11 @@ class Databases(object):
         ----------
         This function turns the CTD database into a dictionary with drugs and their gene targets (names)
         
-        Returns: 
+        Variables: 
         ----------
-        drug_genes = a dictionary with a drug and the corresponding targets (proteins). Where the drug has two or more targets.
+        drug_genes = dictionary with drugs and targets. 
+        fields_CD  = splits the line into fields that are seperated by a tab (\t). The first field is the drug, the 
+                     sixth field is the gene that is targets. 
         
         """
         chemgene = pd.read_csv('~/drfeelgood/Files/CTD_chem_gene_ixns.tsv', sep='\t', comment='#', names=['ChemicalName','ChemicalID','CasRN','GeneSymbol','GeneID','GeneForms','Organism','OrganismID','Interaction','InteractionActions','PubMedIDs'])
@@ -75,12 +79,12 @@ class Databases(object):
         
         Variables: 
         ----------
-        clusterProfiler = The R package: clusterProfiler.
-        data            = List of genes. 
-        
-        Returns: 
-        ----------
-        the call of the class: ProteinSet(). 
+        enrich_KEGG      = the enrichment for the KEGG pathways. This variable is in RS4 format. 
+        KEGGdat          = the results of the enrichment in a normal (r) dataframe format.
+        KEGG             = a r-dataframe with all the annotated genes.
+        full_gl_KEGG     = a set made out of the gene-part in KEGG. 
+        empty_lijst_KEGG = a list 
+        df               = to get the KEGG enrichment results into a pandas dataframe format.
         """
         
         enrich_KEGG = clusterProfiler.enrichKEGG(data, organism = 'hsa', keyType = 'kegg', pvalueCutoff = 0.05, pAdjustMethod = 'BY')
@@ -121,13 +125,13 @@ class Databases(object):
         
         Variables: 
         ----------
-        clusterProfiler = The R package: clusterProfiler.
-        data            = List of genes. 
-        GO_database     = database with GO-terms. 
-        
-        Results: 
-        ----------
-        the call of the class: ProteinSet(). 
+        enrich_GO_MF      = the enrichment for the GO annotations (molecular function). This variable is in RS4 format. 
+        MFdat             = the results of the enrichment in a normal (r) dataframe format.
+        MF                = a R-dataframe containing all the genes that are annotated with GO MF. 
+        full_gl_GOMF      = a set made out of MF. 
+        df_GO_MF          = to get the GO annotation enrichment results into a pandas dataframe format. 
+        empty_lijst_GO_MF = a list containing genelists turned into integers. 
+        dictionary        = a dictionary containing the GO MF annotation and gene lists. 
         """
         
         enrich_GO_MF = clusterProfiler.enrichGO(data, 'org.Hs.eg.db', ont = 'MF', pvalueCutoff = 0.05, pAdjustMethod = 'BY')
@@ -169,13 +173,13 @@ class Databases(object):
         
         Variables: 
         ----------
-        clusterProfiler = The R package: clusterProfiler.
-        data            = List of genes. 
-        GO_database     = database with GO-terms. 
-        
-        Results:
-        ----------
-        the call of the class: ProteinSet(). 
+        enrich_GO_CC      = the enrichment for the GO annotations (cellular component). This variable is in RS4 format. 
+        CCdat             = the results of the enrichment in a normal (r) dataframe format. 
+        CC                = a R-dataframe with with all the genes that are annotated with GO CC. 
+        full_gl_GOCC      = CC turned into a set. 
+        df_GO_CC          = to get the GO annotation enrichment results into a pandas dataframe format.
+        empty_lijst_GO_CC = a list containing gene lists that came out of the first enrichment. 
+        dictionary        = a dictionary with GO_CC and genelists 
         """
         
         enrich_GO_CC = clusterProfiler.enrichGO(data, 'org.Hs.eg.db', ont = 'CC', pvalueCutoff = 0.05, pAdjustMethod = 'BY')
@@ -217,13 +221,13 @@ class Databases(object):
         
         Variables: 
         ----------
-        clusterProfiler = The R package: clusterProfiler.
-        data            = List of genes. 
-        GO_database     = database with GO-terms. 
-        
-        Results: 
-        ----------
-        the call of the class: ProteinSet(). 
+        enrich_GO_BP      = the enrichment for the GO annotations (biological process). This variable is in RS4 format. 
+        BPdat             = the results of the enrichment in a normal (r) dataframe format.
+        BP                = a R-dataframe with GO-BP annotated genes. 
+        full_gl_GOBP      = a set made out of just the genes from BP. 
+        df_GO_BP          = to get the GO annotation enrichment results into a pandas dataframe format.
+        empty_lijst_GO_BP = a list with the gene lists that come out of the first enrichment turned into integers. 
+        dictionary        = a dictionary with the GO BP terms and the gene lists that have something to do with the terms. 
         """
         
         enrich_GO_BP = clusterProfiler.enrichGO(data, 'org.Hs.eg.db', ont = 'BP', pvalueCutoff = 0.05, pAdjustMethod = 'BY')
@@ -252,11 +256,11 @@ class Databases(object):
         df_GO_BP['GeneID'] = empty_lijst_GO_BP
         df_GO_BP = df_GO_BP.sort_values("pvalue").head(500)
         
-        dictionary = {}
+        self.dictionary = {}
         for index, row in df_GO_BP.iterrows():
-            dictionary[row['ID']] = row['GeneID']
+            self.dictionary[row['ID']] = row['GeneID']
         
-        return ProteinSet(dictionary, "GO_BP", full_gl_GOBP)
+        return ProteinSet(self.dictionary, "GO_BP", full_gl_GOBP)
     
     def Reactome(self, clusterProfiler, ReactomePA, data): 
         """
@@ -268,12 +272,15 @@ class Databases(object):
         
         Variable: 
         ----------
-        ReactomePA = the R-package ReactomePA.
-        data       = the gene list. 
-        
-        Returns: 
-        ----------
-        the call of the class: ProteinSet(). 
+        enrich_Reactome = the enrichment for the reactome pathways. This variable is in RS4 format. 
+        ReactomeDat     = the results of the enrichment in a normal (r) dataframe format. 
+        reactome_db     = the whole reactome database imported. 
+        reactome        = a R-list of genes and their pathways. 
+        list_ge         = a list with unique genes that have a reactome annotation. 
+        full_gl_react   = list_ge but made into a set with integers. 
+        df_Reactome     = to get the Reactome enrichment results into a pandas dataframe format. 
+        entrez_list     = a list with the all the genes names turned into entrez id's. 
+        dictionary      = a dictionary with all the reactome results of the first enrichment. 
         """
         
         enrich_Reactome = ReactomePA.enrichPathway(gene=data, pvalueCutoff = 0.05, readable = True, pAdjustMethod = 'BY', organism = "human")
@@ -322,12 +329,12 @@ class Databases(object):
         
         Variables: 
         ----------
-        get_ensp_filtered = filtered ppi dataset turned into genes. 
-        get_entr_filtered_ens = list of genes. 
-        
-        Returns: 
-        ----------
-        the call of the class: ProteinSet(). 
+        D = a dictionary with proteins and a list of proteins that interact with this protein. 
+        string    = a dataset taken from the database: STRING. This dataset contains all the interactions between proteins. 
+                    It also contains a confidence score on how good the interactions are. In this case only the interactions are
+                    kept that have a confidence score of 0.9 or higher. 
+        filt      = a dataframe where only the instances are kept that are present in the list of genes. 
+        filt_list = a list with all the genes that are present in the list of genes.
         """
         
         # Strip the 9606. from the identifiers!
@@ -348,8 +355,5 @@ class Databases(object):
         D = { k : v for (k,v) in D.items() if len(v) > 0 }
         
         return ProteinSet(D, "String", set(get_entr_filtered_ens))
-
-
-
-
+   
 
