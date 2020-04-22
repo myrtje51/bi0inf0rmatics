@@ -12,9 +12,8 @@ class ProteinSet(object):
         
         Variables: 
         ----------
-        proteindict      = a dictionary with a term and a list of proteins per item. 
-        database         = the name of the database. 
-        dataset_universe = the universe that is used to do the enrichment with. 
+        self.proteindict = a dictionary with a term and a list of proteins per item. 
+        self.database    = the name of the database. 
         """
         self.proteindict = { name : set(p) for name, p in proteindict.items() }
         self.database = database
@@ -29,12 +28,16 @@ class ProteinSet(object):
         
         Variables:
         ----------
-        otherset   = the dataset that the other dataset is compared with. 
-        background = the background dataset. 
-        
-        Returns: 
-        ---------
-        df_final = the final dataframe containing the enrichment results. 
+        list_res  = a list with lists that will later be turned into a dataframe. Eech list within the list will have information
+                    about a row in the table. 
+        name      = the name of the drug 
+        pset      = a set of proteins that are targets of the drug. 
+        term      = the name in a list. 
+        proteins  = the proteins in a list. 
+        results   = the enrichment results in a NamedTuple. 
+        l_results = the enrichment results turned into a list. 
+        joined    = the name of the database and the term merged with the l_results list. 
+        df_final  = a dataframe with all the enrichment results. 
         """
         list_res = []
         
@@ -80,8 +83,5 @@ class ProteinSet(object):
             return resTuple(oddsratio, chi2, p, [[a,b],[c,d]], method)
         else:
             return resTuple(oddsratio, chi2, p, table, method)
-
-
-
 
 
