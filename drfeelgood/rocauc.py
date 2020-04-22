@@ -13,11 +13,13 @@ class RocAuc(object):
         
         Variables:
         ----------
-        source = the database that was given by the user. 
-        
-        Returns:
-        ----------
-        source = the database that was given by the user. 
+        drugAge        = the DrugAge dataset. 
+        mapped         = the mapped drug target dataset. 
+        pro_longevity  = all the pro-longevity drugs in the DrugAge dataset. 
+        anti_longevity = all the anti_longevity drugs in the DrugAge dataset.
+        DA_list_anti   = anti-longevity but made into a set.
+        DA_list_pro    = pro-longevity but made into a set. 
+        DADT_pro       = all the pro-longevity drugs present in both the DrugAge dataset and the mapped dataset.
         
         """
         mapped = pd.read_csv('~/drfeelgood/Files/mapped_DB_STITCH_actions_first.tsv', sep='\t')
@@ -37,11 +39,14 @@ class RocAuc(object):
         Variables:
         ----------
         df      = a dataframe with a ranking.
-        rank    = a name of the database that was used to make the ranking. 
-        
-        Returns: 
-        ---------
-        Two lists of ROC's. 
+        roc     = a list with points for a plot. 
+        tp      = true postives
+        tn      = true negatives
+        fp      = false positives
+        fn      = false negatives
+        tpr     = true positive rate
+        fpr     = false positive rate 
+        new_roc = to avoid two of the same tpr/fpr right after the other. 
         """
         df = df.copy()
         df.ranking = df[rank]
@@ -70,16 +75,11 @@ class RocAuc(object):
         Function: 
         ----------
         This function calculates the AUC (Area Under the Curve) 
-        
+    
         Variables: 
         ----------
-        fpr = False Positive Rate.
-        tpr = True Positive Rate. 
-        
-        Returns: 
-        ---------
-        pauc = The (partial) Area Under the Curve. 
-        
+        auc = the Area Under the Curve. 
+    
         """
         auc = 0.0
         newtpr = 1.0
