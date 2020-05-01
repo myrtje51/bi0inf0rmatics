@@ -38,4 +38,4 @@ These enrichments are then ranked by their pvalue. When the lists have been rank
 This is a classthat takes a list of genes and uses heat diffusion to predict drugs that are related to the genes. A ranking of drugs will be returned based on the amount of heat that the drug ends up with. 
 
 ### Other directories. 
-The other two directories are not as important. 
+The other two directories are test_codes and intervention-genes. Test_codes contain codes that were either used for the preprocessing of some datasets or for testing. Intervention-genes contains codes that were used to find the differentially expressed genes in different lifestyle intervention papers. 
