@@ -11,6 +11,7 @@
 - [statsmodels](https://pypi.org/project/statsmodels/)
 - [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy)
 - [matplotlib](https://matplotlib.org/)
+- [scipy](https://www.scipy.org/)
 
 *R packages (within anaconda/miniconda):*
 - [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html)
@@ -18,8 +19,8 @@
 - [STRINGdb](https://www.bioconductor.org/packages/release/bioc/html/STRINGdb.html)
 - [org.Hs.eg.db](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
 
-### What does the package do (summary)? 
-Drfeelgood is a package that takes a list of genes (preferably an R-array which can be read from a file) and enriches this list of genes against a few different biological levels (KEGG, reactome, GO and protein-protein interactions). It then enriches the lists that come out of the first enrichments against a dataset containing drugs with their corresponding targets. This enrichment is done with only the fisher's exact test. 
+### What does the drfeelgood package do (summary)? 
+Drfeelgood is a package that takes a list of genes and enriches this list of genes against a few different biological levels (KEGG, reactome, GO and protein-protein interactions). It then enriches the lists that come out of the first enrichments against a dataset containing drugs with their corresponding targets. This enrichment is done with only the fisher's exact test. 
 These enrichments are then ranked by their pvalue. When the lists have been ranked an average ranking is calculated. A list of drugs will be returned sorted by the average ranking. 
 
 ### What classes does the package contain?
@@ -32,3 +33,9 @@ These enrichments are then ranked by their pvalue. When the lists have been rank
                   second enrichment. The final ranking calculated an average ranking and sorts the dataframe based of that
                   ranking. 
 - aucroc.py     : This piece of code calculates the AUC and can make an ROC (optional). 
+
+### What does the diffusion_class code do? 
+This is a classthat takes a list of genes and uses heat diffusion to predict drugs that are related to the genes. A ranking of drugs will be returned based on the amount of heat that the drug ends up with. 
+
+### Other directories. 
+The other two directories are not as important. 
